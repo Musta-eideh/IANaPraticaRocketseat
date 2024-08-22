@@ -6,7 +6,7 @@
 
 # !pip install 'crewai[tools]'
 
-# !pip install langchain-openai==0.1.7
+# !pip install langchain-openai==0.1.7 
 
 # !pip install langchain-community==0.0.38
 
@@ -181,3 +181,38 @@ len(results['tasks_outputs']) # POSSUI 3 TAKS QUE CADA UMA GEROU UM RESULTADO
 
 # AGORA IREMOS FAZER COM QUE FIQUE BOM PARA LEITURA
 Markdown(results['final_output'])
+
+# CONVERTE O ARQUIVO
+# prompt: jupyter nbconvert --to script crewai-stocks.ipnb
+
+# PODE REMOVER O MARKDOWN LOGO EM SEGUIDA, PORQUE NÃO UTILZIAREMOS
+# POR ENQUANTO DEIXAREMOS A CHAVE DE API, MAS TIRAREMOS ELA EM BREVE
+
+# LOGO EM SEGUIDA PODE-SE IMPORTAR UMA NOVA BIBLIOTECA (STREAMLIT)
+import streamlit as st
+# prompt: pip install streamlit
+# O QUE O STREAMLIT FORNECE? FORNECE UM MÉTODO PARA CONSTRUIRMOS UMA APLICAÇÃO WEB
+# DE PYTHON DE UMA MANEIRA MUITO RÁPIDA
+
+# COMO EXECUTAR COM O STREAMLIT TODA ESSA ARQUITETURA DE CÓDIGO
+# AO FINAL DO CÓDIGO
+
+with st.sidebar:
+  st.header('Enter the Stock to Research')
+
+  with st.form(key='research_form'):
+    topic = st.textInput("Select the ticket")
+    submitBtn = st.formSubmitBtn(label="Run Research")
+
+if submitBtn:
+  if not topic:
+    st.error("Plesase fill the ticket field")
+  else:
+    results = crew.kickoff(inputs={'ticket': topic })
+
+    st.subheader("Results of your research")
+    st.write(results['finalOutput']
+)
+    
+## PARA RODAR PRECISARÁ DO SEGUINTE COMANDO NO PROMPT:
+# PROMPT: streamlit run crewai-stocks.py 
